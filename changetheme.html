@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>jqxGrid Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="base/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" href="grid/styles/jqx.base.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.energyblue.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.summer.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.a.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.b.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.c.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.d.css" type="text/css" />
+    <link rel="stylesheet" href="grid/styles/jqx.e.css" type="text/css" />
+    <script type="text/javascript" src="grid/scripts/jqxcore.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxdata.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxbuttons.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxlistbox.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.grouping.js"></script>
+    <script type="text/javascript" src="grid/scripts/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="generatedata.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var data = generatedata(500);
+
+            var source =
+            {
+                localdata: data,
+                datatype: "array"
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            $("#jqxgrid").jqxGrid({
+                width: 670,
+                theme: 'energyblue',
+                source: dataAdapter,
+                columnsresize: true,
+                groupable: true,
+                groups: ['productname'],
+                sortable: true,
+                pageable: true,
+                pagerheight: 35,
+                pagesize: 100,
+                pagesizeoptions: ['100', '300', '500'],
+                columns: [{ text: 'First Name', dataField: 'firstname', width: 100/*, classname: 'header', cellclassname: 'textcell'*/ },
+            { text: 'Last Name', dataField: 'lastname', width: 100/*, classname: 'header', cellclassname: 'textcell'*/ },
+            { text: 'Product', dataField: 'productname', width: 100/*, classname: 'header', cellclassname: 'textcell'*/ },
+            { text: 'Quantity', dataField: 'quantity', width: 80, cellsalign: 'right'/*, classname: 'header', cellclassname: 'numbercell'*/ }
+                ],
+                ready: function () {
+                    $("#jqxgrid").jqxGrid('sortby', 'firstname', 'asc');
+                }
+            });
+
+            $("#themes").change(function () {
+                $("#jqxgrid").jqxGrid({
+                    theme: $(this).val()
+                });
+
+                $("#jqxgrid").jqxGrid('refresh');
+            });
+        });
+    </script>
+    <style type="text/css">
+        .header
+        {
+            font-weight: bold;
+            font-size: 14px; /*margin-top:5px;*/
+        }
+        
+        .textcell
+        {
+            /*color:Black;*/
+        }
+        
+        .numbercell
+        {
+            color: Red;
+        }
+    </style>
+</head>
+<body class='default'>
+    <div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;">
+        <div>
+            Theme:
+            <select id="themes">
+                <option value="energyblue">Energy Blue</option>
+                <option value="summer">Summer</option>
+                <option value="a">Theme A</option>
+                <option value="b">Theme B</option>
+                <option value="c">Theme C</option>
+            </select>
+        </div>
+        <div id="jqxgrid">
+        </div>
+    </div>
+</body>
+</html>

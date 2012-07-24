@@ -1,0 +1,45 @@
+﻿.jqx-widget-d{}
+.jqx-fill-state-normal-d, .jqx-widget-header-d{ border-color: #aaa; background-color:#E8E8E8; background-image:-webkit-gradient(linear,0 0,0 100%,from(#fafafa),to(#dadada));  background-image:-moz-linear-gradient(top,#fafafa,#dadada);  background-image:-o-linear-gradient(top,#fafafa,#dadada)}
+.jqx-fill-state-hover-d{ border-color:#999;  background-color:#E8E8E8; background-image:-webkit-gradient(linear,0 0,0 100%,from(#fafafa),to(#dadada));  background-image:-moz-linear-gradient(top,#fafafa,#dadada);  background-image:-o-linear-gradient(top,#fafafa,#dadada)}
+.jqx-fill-state-pressed-d{ background-color:#7A7A7A; background-image:-webkit-gradient(linear,0 0,0 100%,from(#989898),to(#696969));  background-image:-moz-linear-gradient(top,#989898,#696969);  background-image:-o-linear-gradient(top,#989898,#696969);  border-color:#666;  color:white;  text-shadow:0 1px 0 #333;  border-image:initial}
+.jqx-fill-state-focus-d { border-color: #555; }
+
+.jqx-grid-column-menubutton-d{ background-color:transparent}
+.jqx-calendar-row-header-d, .jqx-calendar-top-left-header-d{ background-color:#f2f2f2;  border:0px solid #f2f2f2}
+.jqx-calendar-column-header-d{ background-color:#FFF;  border-top:1px solid #FFF;  border-bottom:1px solid #e9e9e9}
+.jqx-scrollbar-state-normal-d{ background-color:#efefef;  border:1px solid #efefef}
+.jqx-scrollbar-button-state-normal-d{ border:1px solid #ececed;  background-color:#ececed}
+.jqx-scrollbar-thumb-state-normal-d{ background-color:#E8E8E8; background-image:-webkit-gradient(linear,left top,right top,from(#fafafa),to(#dadada));  background-image:-moz-linear-gradient(left,#fafafa,#dadada);  background-image:-o-linear-gradient(left,#fafafa,#dadada);  border:1px solid #bbb}
+.jqx-scrollbar-thumb-state-hover-d{ background-color:#e8e8e8;  border:1px solid #aaa}
+.jqx-scrollbar-thumb-state-pressed-d, .jqx-progressbar-value-vertical-d{ background-color:#7A7A7A; background-image:-webkit-gradient(linear,left top,right top,from(#989898),to(#696969));    background-image:-moz-linear-gradient(left,#989898,#696969);    background-image:-o-linear-gradient(left,#989898,#696969); border:1px solid #666}
+
+.icon-arrow-up-selected-d{background-image:url('images/icon-up-white.png'); background-repeat:no-repeat; background-position:center}
+.icon-arrow-down-selected-d{background-image:url('images/icon-down-white.png'); background-repeat:no-repeat; background-position:center}
+.icon-arrow-left-selected-d{background-image:url('images/icon-left-white.png'); background-repeat:no-repeat; background-position:center}
+.icon-arrow-right-selected-d{background-image:url('images/icon-right-white.png');background-repeat:no-repeat; background-position:center}
+.jqx-slider-track-horizontal-d, .jqx-slider-track-vertical-d{border-color: #e8e8e8; background: #e8e8e8;}
+.jqx-slider-rangebar-d{background:#7A7A7A;}
+.jqx-grid-column-sortdescbutton-d, jqx-grid-column-filterbutton-d, .jqx-grid-column-sortascbutton-d{ background-color:transparent;  border-style:solid;  border-width:0px 0px 0px 0px;  border-color:#aaa}
+.jqx-scrollbar-button-state-hover-d, .jqx-grid-cell-hover-d, .jqx-menu-item-hover-d, .jqx-menu-item-top-hover-d, .jqx-tree-item-hover-d{filter: none; background-color:#eee; background-image:-webkit-gradient(linear,0 0,0 100%,from(#fafafa),to(#eee));  background-image:-moz-linear-gradient(top,#fafafa,#eee);  background-image:-o-linear-gradient(top,#fafafa,#eee); border-color:#999;  color:#222; text-shadow:0 1px 0 #f2f2f2;}
+.jqx-tree-item-selected-d, .jqx-menu-item-selected-d, .jqx-menu-item-top-selected-d{ background-color:#7A7A7A; filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#989898',endColorstr='#696969',GradientType=0 );   background-image:-webkit-gradient(linear,0 0,0 100%,from(#989898),to(#696969));  background-image:-moz-linear-gradient(top,#989898,#696969); background-image:-o-linear-gradient(top,#989898,#696969); border-color:#666;  color:white; text-shadow:0 1px 0 #333;border-image:initial}
+.jqx-expander-header-expanded-d, .jqx-scrollbar-button-state-pressed-d, .jqx-grid-cell-selected-d{color: #222; text-shadow:0 1px 0 #f2f2f2; background-color: #dadada; filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#dadada',GradientType=0 ); /* IE6-9 */              background-image: -webkit-gradient(linear,0 0,0 100%,from(#E8E8E8),to(#dadada));background-image: -moz-linear-gradient(top,#E8E8E8,#dadada); background-image: -o-linear-gradient(top,#E8E8E8,#dadada);}
+.jqx-expander-header-expanded-d{ border-color: #aaa;}
+.jqx-menu-vertical-d{ background:#E8E8E8; filter: none;}
+.jqx-menu-item-arrow-right-selected-d{background-image:url(images/icon-right-white.png); background-position:100% 50%; background-repeat:no-repeat}
+.jqx-menu-item-arrow-down-selected-d{background-image:url(images/icon-down-white.png); background-position:100% 50%; background-repeat:no-repeat}
+.jqx-menu-item-arrow-up-selected-d{background-image:url(images/icon-up-white.png);background-position:100% 50%; background-repeat:no-repeat}
+.jqx-menu-item-arrow-left-selected-d{background-image:url(images/icon-left-white.png); background-position:0 50%; background-repeat:no-repeat}
+
+.jqx-radiobutton-d{border:none; background: none;}
+.jqx-radiobutton-default-d{filter: none; background:transparent url(images/roundbg_d_normal.png) left center scroll repeat-x;  border:0px solid #c9c9c9; -moz-border-radius:0px; -webkit-border-radius:0px; border-radius:0px}
+.jqx-radiobutton-hover-d{filter: none;  -moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;background:transparent url(images/roundbg_d_hover.png) left center scroll repeat-x;     border:0px solid #000}
+.jqx-radiobutton-disabled-d{filter: none; background:transparent;border:none}
+.jqx-radiobutton-disabled-box-d{filter: none;  background:transparent url(images/roundbg_disabled.png) left top scroll no-repeat; border:0px solid #aaa}
+.jqx-radiobutton-check-checked-d{filter: none; margin:0px; width:12px;height:12px;background:transparent url(images/roundbg_check_black.png) left top no-repeat; border:none}
+.jqx-radiobutton-check-disabled-d{filter: none; background:transparent url(images/roundbg_check_disabled.png) left top no-repeat; border:none}
+.jqx-radiobutton-check-indeterminate-d{filter: none; background:transparent url(images/roundbg_check_indeterminate.png) left top no-repeat; border:none}
+.jqx-radiobutton-check-indeterminate-disabled-d{filter: none; background:transparent url(images/roundbg_check_disabled.png) left top no-repeat;border:none}
+
+.jqx-grid-bottomright-d, .jqx-panel-bottomright-d, .jqx-listbox-bottomright-d{background-color: #efefef;}
+.jqx-tabs-title-selected-top-d, .jqx-tabs-selection-tracker-top-d {border-color: #aaa; border-bottom: 1px solid #fff; text-shadow:0 1px 0 #f2f2f2; filter: none; color: #222; background: #fff;}
+.jqx-tabs-title-selected-bottom-d, .jqx-tabs-selection-tracker-bottom-d {border-color: #aaa; border-top: 1px solid #fff; text-shadow:0 1px 0 #f2f2f2; filter: none; color: #222; background: #fff;}

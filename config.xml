@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns		= "http://www.w3.org/ns/widgets"
+	xmlns:gap	= "http://phonegap.com/ns/1.0"
+	id		= "82MFRX699K.com.vegasmb.nxt"
+	version 	= "1.2.0">
+
+	<name>Layout Demo</name>
+
+	<description>
+	Test for iOS deployment
+	</description>
+
+	<author href="http://www.vegasmb.com"
+		email="duong.ho.vu@outsourceit-int.com">
+Vu Duong
+	</author>
+
+	<icon src="icon.png" gap:role="default" />
+
+	<feature name="http://api.phonegap.com/1.0/geolocation"/>
+	<feature name="http://api.phonegap.com/1.0/network"/>
+	<feature name="http://api.phonegap.com/1.0/file"/>
+
+	<preference name="orientation" value="universal" />
+</widget>

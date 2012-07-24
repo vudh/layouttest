@@ -1,0 +1,38 @@
+﻿.jqx-widget-a{border-color:#222}
+.jqx-widget-content-a{color:#222; border-color:#262626}
+.jqx-fill-state-normal-a, .jqx-widget-header-a{color:#fff; border-color:#000; background:#000 url(images/bg_black.png) left center scroll repeat-x}
+.jqx-fill-state-hover-a{background:transparent url(images/bg_blackhover.png) left center scroll repeat-x; border-color:#262626; color:#fff}
+.jqx-fill-state-pressed-a, .jqx-menu-item-top-hover-a{background:transparent url(images/bg_blackpressed.png) left center scroll repeat-x; border-color:#262626; color:#fff}
+
+.jqx-checkbox-check-checked-a{background:transparent url(images/check_white.png) left top no-repeat}
+.jqx-checkbox-check-indeterminate-a{background:transparent url(images/check_indeterminate_white.png) left top no-repeat}
+.jqx-grid-a, .jqx-grid-header-a, .jqx-grid-cell-a{border-color:#262626}
+.jqx-widget-a .jqx-grid-cell-a, .jqx-widget-a .jqx-grid-group-cell-a{border-color:#262626}
+.jqx-widget-a .jqx-grid-column-menubutton-a, .jqx-widget-a .jqx-grid-column-sortascbutton-a, .jqx-widget-a .jqx-grid-column-sortdescbutton-a, .jqx-widget-a .jqx-grid-column-filterbutton-a{border-color:#262626}
+.jqx-widget-a .jqx-grid-column-header-a{border-color:#262626}
+.jqx-grid-bottomright-a, .jqx-panel-bottomright-a, .jqx-listbox-bottomright-a{background-color:#262626}
+.jqx-widget-a .jqx-grid-column-menubutton-a, .jqx-menu-vertical-a{background-color:#262626; border-color:#262626}
+ .jqx-grid-selectionarea-a{background-color:#262626; border:1px solid #262626; opacity:0.5}
+.jqx-grid-group-cell-a{border-color:#262626; background-color:#fff}
+.jqx-grid-cell-sort-a, .jqx-grid-cell-filter-a, .jqx-grid-cell-pinned-a{ background-color:#eaf8ff}
+.jqx-grid-cell-alt-a, .jqx-grid-cell-sort-alt-a, .jqx-grid-cell-filter-alt-a{ background-color:#deedf5}
+.jqx-grid-cell-selected-a{background:#262626; color:#fff}
+.jqx-grid-cell-hover-a{background:#646464; color:#fff}
+.jqx-menu-vertical-a{background: #222; color:#fff;}
+.jqx-scrollbar-state-normal-a{background:#555; border:1px solid #555}
+.jqx-scrollbar-button-state-normal-a{border:1px solid #555; background:#555}
+.jqx-scrollbar-button-state-hover-a{background:#555 url(images/bg_blackhover.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-button-state-pressed-a{background:#555 url(images/bg_blackpressed.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-normal-horizontal-a{background:#555 url(images/bg_black.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-hover-horizontal-a{ background:#555 url(images/bg_blackhover.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-pressed-horizontal-a{background:#555 url(images/bg_blackpressed.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-normal-a{background:#555 url(images/bg_black_horizontal.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-hover-a{background:#555 url(images/bg_blackhover_horizontal.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-scrollbar-thumb-state-pressed-a{background:#555 url(images/bg_blackpressed_horizontal.png) left top scroll repeat-x; border:1px solid #000}
+.jqx-splitter-splitbar-horizontal-a, .jqx-splitter-splitbar-vertical-a, .jqx-splitter-splitbar-hover-a, .jqx-splitter-splitbar-hover-horizontal-a{background: #555;}
+.jqx-splitter-collapse-button-horizontal-a, .jqx-splitter-collapse-button-vertical-a{background: #7f7f7f;}
+.jqx-grid-column-sortascbutton-a, .jqx-expander-arrow-bottom-a, .jqx-window-collapse-button-a, .jqx-menu-item-arrow-up-a, .jqx-menu-item-arrow-up-selected-a, .jqx-menu-item-arrow-top-up-a, .icon-arrow-up-a, .icon-arrow-up-hover-a, .icon-arrow-up-selected-a{background-image:url('images/icon-up-white.png'); background-repeat:no-repeat; background-position:center}
+.jqx-grid-column-menubutton-a, .jqx-grid-column-sortdescbutton-a, .jqx-expander-arrow-top-a, .jqx-window-collapse-button-collapsed-a, .jqx-menu-item-arrow-down-a, .jqx-menu-item-arrow-down-selected-a, .jqx-menu-item-arrow-down-a, .icon-arrow-down-a, .icon-arrow-down-hover-a, .icon-arrow-down-selected-a{background-image:url('images/icon-down-white.png'); background-repeat:no-repeat; background-position:center}
+.jqx-tabs-arrow-left-a, .jqx-menu-item-arrow-left-selected-a, .jqx-menu-item-arrow-top-left, .icon-arrow-left-a, .icon-arrow-down-left-a, .icon-arrow-left-selected-a{background-image:url('images/icon-left-white.png'); background-repeat:no-repeat; background-position:center}
+.jqx-tabs-arrow-right-a, .jqx-menu-item-arrow-right-selected-a, .jqx-menu-item-arrow-top-right-a, .icon-arrow-right-a, .icon-arrow-right-hover-a, .icon-arrow-right-selected-a{background-image:url('images/icon-right-white.png'); background-repeat:no-repeat; background-position:center}
+.jqx-window-close-button-a, .icon-close-a, .jqx-tabs-close-button-a, .jqx-tabs-close-button-hover-a, .jqx-tabs-close-button-selected-a{background-image:url(images/close_white.png);  background-repeat:no-repeat;  background-position:center}
