@@ -25,6 +25,7 @@
                 $.mobile.defaultPageTransition = 'none';
                 $.mobile.defaultDialogTransition = 'none';
             }
+            $.mobile.changePage.defaults.allowSamePageTransition = true;
         });
     </script>
     <script src="base/jquery.mobile-1.1.0.min.js"></script>
@@ -62,12 +63,13 @@
     <script type="text/javascript" src="jnotify/jNotify.jquery.min.js"></script>
     <script type="text/javascript">
         //var host = 'http://vaf.vegasmb.com:8101/VAFService/Service.svc';
-        //var host = 'http://localhost:2836/Service.svc';
+        var host = 'http://localhost:2836/Service.svc';
 
-        //var host = 'http://10.63.0.103/TestService/Service.svc';
+        //var host = 'http://10.63.0.103/VAFService/Service.svc';
         //var host = 'http://vaf.vegasmb.com:8101/ServiceDebug/Service.svc';
-        var host = 'http://vaf.vegasmb.com:8101/Service_Custom/Service.svc';
+        //var host = 'http://vaf.vegasmb.com:8101/Service_Custom/Service.svc';
 
+        var generalError = 'Error while trying to load data from the server !';
         var prevId;
         var curWindowId;
         var dtpickertheme = 'default';
@@ -166,10 +168,130 @@
             $(this).attr('data-theme', newTheme).removeClass('ui-body-' + oldTheme).addClass('ui-body-' + newTheme).trigger('create');
         });
 
+        function logOn() {
+            // validate form
+            $('#logonForm').validate();
+            if (!$("#logonForm").valid())
+                return false;
+
+            host = $('#ServerURL').val();
+
+            $.mobile.showPageLoadingMsg();
+
+            var postTo = host + '/LogOn?method=?';
+
+            $.ajax({
+                url: postTo,
+                data: { user_name: $('#UserName').val(), password: $('#Password').val() },
+                type: "GET",
+                dataType: "jsonp",
+                success: function (data) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var x = jQuery.parseJSON(data.LogOnResult);
+
+                    if (x.success) {
+                        var markup = "";
+
+                        $.each(x.myApps, function (index, elem) {
+                            markup += '<li><a id="' + elem.Id + '#' + elem.CustomTheme + '" onclick="openApp(this);">' + elem.Name + '</a></li>';
+                        });
+
+                        changePage("#myApps");
+
+                        // Update the content and refresh
+                        $('#listMyApps').html(markup);
+                        $('#listMyApps').listview('refresh');
+                    }
+                    else {
+                        errorMessage(x.errorMessage);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+        }
+
+        $('#allApps').live("pageshow", function () {
+            $.mobile.showPageLoadingMsg();
+
+            $.ajax({
+                url: host + '/GetAllApps?method=?',
+                data: {},
+                type: "GET",
+                dataType: "jsonp",
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response);
+
+                    var markup = '<fieldset data-role="controlgroup">';
+                    $.each(data.allApps, function (index, elem) {
+                        markup += '<input type="checkbox" name="checkbox-' + elem.Id + '" id="checkbox-' + elem.Id + '" class="custom" /><label for="checkbox-' + elem.Id + '">' + elem.Name + '</label>';
+                    });
+                    markup += '</fieldset>';
+
+                    // Update the content and refresh
+                    $('#listAllApps').html(markup).page();
+                    $("div[id='allApps'] input:checkbox").checkboxradio();
+                    $('#allApps').page();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+        });
+
+        function onAddAppsClick() {
+            var boxes = $("div[id='allApps'] input:checkbox:checked");
+            if (boxes.length == 0) {
+                errorMessage('Please select any apps before !');
+                return;
+            }
+
+            $.mobile.showPageLoadingMsg();
+
+            var apps = [];
+            $.each(boxes, function (index, item) {
+                apps.push(item.id.split('-')[1]);
+            });
+
+            var postTo = host + '/AddApps?method=?';
+
+            $.ajax({
+                url: postTo,
+                data: { url: serverURL, apps: apps },
+                type: "POST",
+                dataType: "jsonp",
+                traditional: true,
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response.AddAppsResult);
+
+                    if (data.result) {
+                        infoMessage('Add the selected apps successfully !');
+
+                        //getMyApps();
+                    }
+                    else {
+                        errorMessage(data.errorMessage);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+        }
+
         function changePage(id) {
             curWindowId = id;
             prevId = $.mobile.activePage.prop('id');
-            
+
             $.mobile.changePage(jQuery(id));
 
             if (id != '#myApps')
@@ -178,7 +300,7 @@
 
         function changeSwatch(swatch, swatchName) {
             swatchSelected = swatch;
-            
+
             $("#dialog").dialog("close");
             $('div[id|="jqxgrid"]').each(function () {
                 $(this).jqxGrid({ theme: swatchSelected });
@@ -190,43 +312,10 @@
             $("#selectTheme .ui-btn-text").text(swatchName);
         }
 
-        // Add this to run correctly on Android
-        $('#mainPage').live("pageshow", function () {
-            changePage("#myApps");
-        });
-
         $('#myApps').live("pageshow", function () {
             // Always set default theme for main page
             swatchSelected = 'a';
             $("link[href*='themes']").prop('href', initTheme);
-
-            $.mobile.showPageLoadingMsg();
-            var postTo = host + '/GetCurrentApps?method=?';
-
-            $.ajax({
-                url: postTo,
-                data: {},
-                type: "GET",
-                dataType: "jsonp",
-                success: function (data) {
-                    $.mobile.hidePageLoadingMsg();
-
-                    var x = jQuery.parseJSON(data);
-                    var markup = "";
-
-                    $.each(x.myApps, function (index, elem) {
-                        markup += '<li><a id="' + elem.Id + '#' + elem.CustomTheme + '" onclick="openApp(this);">' + elem.Name + '</a></li>';
-                    });
-
-                    // Update the content and refresh
-                    $('#listMyApps').html(markup);
-                    $('#listMyApps').listview('refresh');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    showMessage('Error while trying to load data from the server !');
-                    $.mobile.hidePageLoadingMsg();
-                }
-            });
 
             // update the body theme when page shown
             $(this).removeClass(classes).addClass('ui-body-' + swatchSelected).attr('data-theme', swatchSelected);
@@ -238,14 +327,17 @@
 
             if (parts.length == 0) return;
 
-            $.mobile.showPageLoadingMsg();
-
             // Change theme to selected app            
             if (jQuery.trim(parts[1]) != '' && parts[1] != "null")
                 $("link[href*='themes']").prop('href', parts[1]);
 
-            var postTo = host + '/GetCurrentApp?method=?';
+            // reset the selected recno when changing app
+            selectedRecno = '';
+
             selectedApp = parts[0];
+            $.mobile.showPageLoadingMsg();
+            var postTo = host + '/GetCurrentApp?method=?';
+
             $.ajax({
                 url: postTo,
                 data: { appID: selectedApp, theme: swatchSelected },
@@ -286,7 +378,7 @@
                         makeDateTimePicker(data.dateTimeIds[i]);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    showMessage('Error while trying to load data from the server !');
+                    errorMessage(generalError);
                     $.mobile.hidePageLoadingMsg();
                 }
             });
@@ -307,16 +399,16 @@
             $('#' + id).scroller('setDate', new Date(), true);
         }
 
-        function showMessage(message) {
-            //$("<div id='notification' class='ui-loader ui-overlay-shadow ui-body-e ui-corner-all' style='padding:5px 15px;'><h1>" + message + "</h1></div>")
-//            $("<div id='notification' class='ui-loader ui-overlay-shadow ui-body-e ui-corner-all' style='padding:5px 15px;'><p><strong>" + message + "</strong></p></div>")
-//				.css({ "display": "block", "opacity": 0.96, "top": $(window).scrollTop() + 100 })
-//				.appendTo($.mobile.pageContainer)
-//				.delay(800)
-//				.fadeOut(800, function () {
-//				    $(this).remove();
-            //				});
+        function errorMessage(message) {
             jError(message, { autoHide: true,
+                TimeShown: 3000,
+                ShowOverlay: false,
+                HorizontalPosition: 'center'
+            });
+        }
+
+        function infoMessage(message) {
+            jNotify(message, { autoHide: true,
                 TimeShown: 3000,
                 ShowOverlay: false,
                 HorizontalPosition: 'center'
@@ -328,7 +420,6 @@
             address = $(id).val();
 
             if (address != "") {
-                //$('#backMap').attr('href', '#' + $.mobile.activePage.prop('id'));
                 $('#backMap').attr('onclick', 'changePage("#' + $.mobile.activePage.prop('id') + '")');
 
                 try {
@@ -344,7 +435,7 @@
                         lng = results[0].geometry.location.lng();
                     }
                     else {
-                        showMessage('Cannot locate the address !');
+                        errorMessage('Cannot locate the address !');
                         return false;
                     }
 
@@ -355,7 +446,7 @@
                 });
             }
             else {
-                showMessage('Address is empty !');
+                errorMessage('Address is empty !');
             }
         }
 
@@ -364,13 +455,12 @@
             address = $(id).val();
 
             if (address != "") {
-                //$('#backRoute').attr('href', '#' + $.mobile.activePage.prop('id'));
                 $('#backRoute').attr('onclick', 'changePage("#' + $.mobile.activePage.prop('id') + '")');
 
                 changePage("#routePage");
             }
             else {
-                showMessage('Address is empty !');
+                errorMessage('Address is empty !');
             }
         }
 
@@ -394,15 +484,15 @@
                                 $.mobile.hidePageLoadingMsg();
 
                                 if (success) {
-                                    showMessage('Get directions successfully !');
+                                    infoMessage('Get directions successfully !');
                                 } else {
-                                    showMessage('Get directions failed !');
+                                    errorMessage('Get directions failed !');
                                 }
                             });
                         }
                         else {
                             $.mobile.hidePageLoadingMsg();
-                            showMessage('Cannot get the location !');
+                            errorMessage('Cannot get the location !');
                         }
                     });
                 });
@@ -418,7 +508,7 @@
                 $(a).prop("href", "tel:" + phone);
             }
             else {
-                showMessage('Please enter the phone number !');
+                errorMessage('Please enter the phone number !');
             }
         }
 
@@ -429,7 +519,7 @@
                 $(a).prop("href", "sms:" + phone);
             }
             else {
-                showMessage('Please enter the phone number !');
+                errorMessage('Please enter the phone number !');
             }
         }
 
@@ -440,18 +530,159 @@
                 $(a).prop("href", "mailto:" + email);
             }
             else {
-                showMessage('Please enter the email address !');
+                errorMessage('Please enter the email address !');
             }
         }
 
-        function onSendMail(data) {
-            $.mobile.hidePageLoadingMsg();
-            if (data.result == '') {
-                showMessage('Email sent successfully !');
-            }
-            else {
-                showMessage('Failed to send mail with error: ' + data.result);
-            }
+        var isDialogOpen = false;
+        var selectedRecno = '';
+        var selectedIndex;
+        function saveInstance(entity, instanceKey) {
+            var names, vals;
+            var selector = "input:text";
+            if (isDialogOpen) selector = "#editDialog input:text";
+
+            $(selector).each(function (i) {
+                if ($(this).attr('data-field') != null) {
+                    if (names == null) {
+                        names = $(this).attr('data-field');
+                        vals = $(this).val();
+                    }
+                    else {
+                        names = names + '#' + $(this).attr('data-field');
+                        vals = vals + '#' + $(this).val();
+                    }
+                }
+            });
+            $.mobile.showPageLoadingMsg();
+
+            if (selectedRecno.length > 0) instanceKey = selectedRecno;
+            else selectedIndex = 0;
+
+            var postTo = host + '/SaveInstance?method=?';
+            $.ajax({
+                url: postTo,
+                data: { entity: entity, instanceKey: instanceKey, names: names, vals: vals },
+                type: "GET",
+                dataType: "jsonp",
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response.SaveInstanceResult);
+                    if (data.message.length == 0) {
+                        infoMessage('Save instance successfully !');
+
+                        $("#editDialog").dialog("close");
+                        refreshGridData();
+                    }
+                    else
+                        errorMessage(data.message);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+            isDialogOpen = false;
+        }
+
+        function deleteInstance(entity, instanceKey) {
+            $.mobile.showPageLoadingMsg();
+
+            if (selectedRecno.length > 0) instanceKey = selectedRecno;
+
+            var postTo = host + '/DeleteInstance?method=?';
+            $.ajax({
+                url: postTo,
+                data: { entity: entity, instanceKey: instanceKey },
+                type: "GET",
+                dataType: "jsonp",
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response.DeleteInstanceResult);
+                    if (data.message.length == 0) {
+                        infoMessage('Delete instance successfully !');
+                        selectedIndex = 0;
+                        refreshGridData();
+                    }
+                    else
+                        errorMessage(data.message);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+        }
+
+        function refreshGridData() {
+            $('div[id|="jqxgrid"]').each(function () {
+                $(this).jqxGrid('updatebounddata');
+                var datainfo = $(this).jqxGrid('getdatainformation');
+                if (datainfo.rowscount > 0)
+                    $(this).jqxGrid('selectrow', selectedIndex);
+            });
+        }
+
+        function insertRecordDialog(title, window, entity, instanceKey) {
+            // reset the selected recno when show edit dialog
+            selectedRecno = '';
+            isDialogOpen = true;
+
+            $.mobile.showPageLoadingMsg();
+            var postTo = host + '/GetDetailContent?method=?';
+            $.ajax({
+                url: postTo,
+                data: { windowId: window, recno: 0, editable:true },
+                type: 'GET',
+                dataType: 'jsonp',
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response.GetDetailContentResult);
+                    if (data.html.length == 0)
+                        errorMessage(generalError);
+                    else {
+                        $("#wrapperDialog").html(data.html).trigger("create");
+                        $('#editDialog h1').html(title);
+                        $.mobile.changePage('#editDialog');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
+        }
+
+        function editRecordDialog(title, window, entity, instanceKey) {            
+            isDialogOpen = true;
+
+            $.mobile.showPageLoadingMsg();
+            var postTo = host + '/GetDetailContent?method=?';
+            $.ajax({
+                url: postTo,
+                data: { windowId: window, recno: selectedRecno, editable: true },
+                type: 'GET',
+                dataType: 'jsonp',
+                success: function (response) {
+                    $.mobile.hidePageLoadingMsg();
+
+                    var data = jQuery.parseJSON(response.GetDetailContentResult);
+                    if (data.html.length == 0)
+                        errorMessage(generalError);
+                    else {
+                        $("#wrapperDialog").html(data.html).trigger("create");
+                        $('#editDialog h1').html(title);
+                        $.mobile.changePage('#editDialog');                        
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    errorMessage(generalError);
+                    $.mobile.hidePageLoadingMsg();
+                }
+            });
         }
 
         $(document).delegate('.newPage', 'pageshow', function () {
@@ -570,7 +801,7 @@
                 dataType: "jsonp",
                 success: onGetPageData,
                 error: function (xhr, ajaxOptions, thrownError) {
-                    showMessage('Error while trying to load data from the server !');
+                    errorMessage(generalError);
                     $.mobile.hidePageLoadingMsg();
                 }
             });
@@ -586,7 +817,7 @@
                 dataType: "jsonp",
                 success: onGetPageData,
                 error: function (xhr, ajaxOptions, thrownError) {
-                    showMessage('Error while trying to load data from the server !');
+                    errorMessage(generalError);
                     $.mobile.hidePageLoadingMsg();
                 }
             });
@@ -632,49 +863,7 @@
         {
             color:Red;
         }
-        /* disable shadows for better android performance */
-.ui-body-a,
-.ui-bar-a,
-.ui-btn-up-a,
-.ui-btn-hover-a,
-.ui-btn-down-a,
-
-.ui-body-b,
-.ui-bar-b,
-.ui-btn-up-b,
-.ui-btn-hover-b,
-.ui-btn-down-b,
-
-.ui-body-c,
-.ui-bar-c,
-.ui-btn-up-c,
-.ui-btn-hover-c,
-.ui-btn-down-c,
-
-.ui-body-d,
-.ui-bar-d,
-.ui-btn-up-d,
-.ui-btn-hover-d,
-.ui-btn-down-d,
-
-.ui-body-e,
-.ui-bar-e,
-.ui-btn-up-e,
-.ui-btn-hover-e,
-.ui-btn-down-e,
-
-.ui-shadow-inset,
-.ui-icon-shadow,
-.ui-focus,
-.ui-overlay-shadow,
-.ui-shadow,
-.ui-btn-active,
-* {
-    text-shadow: none !important;
-    box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-}
+        
         .content-left
         {
             float: left;
@@ -778,24 +967,69 @@
 </head>
 <body id="page_body">
     
-    <div data-role="page" data-theme="b" id="mainPage">
+    <div data-role="page" id="mainPage">
         <div data-role="header">
             <h1>
-                HTML Client</h1>
+                VAF Client</h1>
         </div>
         <div data-role="content">
-            <h1>
-                Main Page</h1>
+            <script src="scripts/jquery.validate.min.js" type="text/javascript"></script>
+            <script src="scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+            <form method="post" id="logonForm">
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">Log On</li>
+                <li data-role="fieldcontain">
+                    <label for="UserName">
+                        User name</label>
+                    <input data-val="true" data-val-required="The User name field is required." id="UserName"
+                        name="UserName" type="text" value="" />
+                    <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true">
+                    </span></li>
+                <li data-role="fieldcontain">
+                    <label for="Password">
+                        Password</label>
+                    <input data-val="true" data-val-required="The Password field is required." id="Password"
+                        name="Password" type="password" />
+                    <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true">
+                    </span></li>
+                <li data-role="fieldcontain">
+                    <label for="ServerURL">
+                        Server URL</label>
+                    <input data-val="true" data-val-required="The Server URL field is required." id="ServerURL"
+                        name="ServerURL" type="text" value="http://10.63.0.103/VAFService/Service.svc" />
+                    <span class="field-validation-valid" data-valmsg-for="ServerURL" data-valmsg-replace="true">
+                    </span></li>
+                <li data-role="fieldcontain">
+                    <input type="button" id="btnLogOn" value="Log On" onclick="logOn();" />
+                </li>
+            </ul>
+            </form>
         </div>
     </div>
     <div data-role="page" id="myApps">
         <div data-role="header">
             <h1>
                 Layout Demo</h1>
+            <a onclick="changePage('#mainPage');" data-icon="arrow-l">Back</a> <a onclick="changePage('#allApps');"
+                data-icon="plus">Add</a>
         </div>
         <div data-role="content">
             <ul data-role="listview" data-inset="true" id="listMyApps">
             </ul>
+        </div>
+    </div>
+    <div data-role="page" data-theme="b" id="allApps">
+        <div data-role="header">
+            <h1>
+                All Apps</h1>
+            <a onclick="changePage('#myApps');" data-role="button" data-icon="arrow-l">Cancel</a>
+            <a onclick="onAddAppsClick();" data-icon="check" data-role="button">Save</a>
+        </div>
+        <div data-role="content">
+            <h3>
+                Select app(s) you want:</h3>
+            <div data-role="fieldcontain" id="listAllApps">
+            </div>
         </div>
     </div>
     <div data-role="page" id="mapPage" class="page-map">
@@ -827,6 +1061,16 @@
             </div>
         </div>
     </div>
+    <div data-role="dialog" id="editDialog">
+        <div data-role="header">
+            <h1>
+                Select Theme</h1>
+        </div>
+        <div data-role="content">
+            <div id="wrapperDialog">
+            </div>
+        </div>
+    </div>
     <div data-role="dialog" id="dialog">
         <div data-role="header">
             <h1>
@@ -834,9 +1078,6 @@
         </div>
         <div data-role="content">
             <ul data-role="listview" data-inset="true" id="lstThemes">
-                <li data-theme="a"><a href="#" onclick="changeSwatch('a', 'Theme A');">Theme A</a></li>
-                <li data-theme="b"><a href="#" onclick="changeSwatch('b', 'Theme B');">Theme B</a></li>
-                <li data-theme="c"><a href="#" onclick="changeSwatch('c', 'Theme C');">Theme C</a></li>
             </ul>
         </div>
     </div>
