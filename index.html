@@ -67,6 +67,7 @@
 
         //var host = 'http://10.63.0.103/VAFService/Service.svc';
         //var host = 'http://vaf.vegasmb.com:8101/ServiceDebug/Service.svc';
+        //var host = 'http://vaf.vegasmb.com:8101/CRUDService/Service.svc';
         //var host = 'http://vaf.vegasmb.com:8101/Service_Custom/Service.svc';
 
         var generalError = 'Error while trying to load data from the server !';
@@ -587,6 +588,8 @@
         }
 
         function deleteInstance(entity, instanceKey) {
+            if (!confirm("Are you sure to delete this record?")) return false;
+
             $.mobile.showPageLoadingMsg();
 
             if (selectedRecno.length > 0) instanceKey = selectedRecno;
@@ -982,21 +985,21 @@
                     <label for="UserName">
                         User name</label>
                     <input data-val="true" data-val-required="The User name field is required." id="UserName"
-                        name="UserName" type="text" value="" />
+                        name="UserName" type="text" value="admin" />
                     <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true">
                     </span></li>
                 <li data-role="fieldcontain">
                     <label for="Password">
                         Password</label>
                     <input data-val="true" data-val-required="The Password field is required." id="Password"
-                        name="Password" type="password" />
+                        name="Password" type="password" value="admin" />
                     <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true">
                     </span></li>
                 <li data-role="fieldcontain">
                     <label for="ServerURL">
                         Server URL</label>
                     <input data-val="true" data-val-required="The Server URL field is required." id="ServerURL"
-                        name="ServerURL" type="text" value="http://10.63.0.103/VAFService/Service.svc" />
+                        name="ServerURL" type="text" value="http://vaf.vegasmb.com:8101/CRUDService/Service.svc" />
                     <span class="field-validation-valid" data-valmsg-for="ServerURL" data-valmsg-replace="true">
                     </span></li>
                 <li data-role="fieldcontain">
@@ -1009,9 +1012,9 @@
     <div data-role="page" id="myApps">
         <div data-role="header">
             <h1>
-                Layout Demo</h1>
-            <a onclick="changePage('#mainPage');" data-icon="arrow-l">Back</a> <a onclick="changePage('#allApps');"
-                data-icon="plus">Add</a>
+                VAF Client</h1>
+            <a onclick="changePage('#mainPage');" data-icon="arrow-l">Back</a> 
+            <!--<a onclick="changePage('#allApps');" data-icon="plus">Add</a>-->
         </div>
         <div data-role="content">
             <ul data-role="listview" data-inset="true" id="listMyApps">
